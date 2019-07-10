@@ -1,0 +1,112 @@
+CREATE DATABASE carriage
+    WITH 
+    OWNER = admin
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'ru_UA.UTF-8'
+    LC_CTYPE = 'ru_UA.UTF-8'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+
+GRANT ALL ON DATABASE carriage TO admin;
+
+GRANT TEMPORARY, CONNECT ON DATABASE carriage TO PUBLIC;
+
+CREATE TABLE public.users
+(
+    id integer NOT NULL DEFAULT nextval('users_id_seq'::regclass),
+    name text COLLATE pg_catalog."default" NOT NULL,
+    phone character(10) COLLATE pg_catalog."default" NOT NULL,
+    email text COLLATE pg_catalog."default" NOT NULL,
+    password text COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT users_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.users
+    OWNER to admin;
+
+
+CREATE TABLE public.messages
+(
+    id integer NOT NULL DEFAULT nextval('messages_id_seq'::regclass),
+    email text COLLATE pg_catalog."default" NOT NULL,
+    message text COLLATE pg_catalog."default",
+    CONSTRAINT messages_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.messages
+    OWNER to admin;
+
+
+
+CREATE TABLE public.orders
+(
+    id integer NOT NULL DEFAULT nextval('orders_id_seq'::regclass),
+    userid integer,
+    tipe text COLLATE pg_catalog."default",
+    weight integer NOT NULL,
+    date text COLLATE pg_catalog."default",
+    CONSTRAINT orders_pkey PRIMARY KEY (id),
+    CONSTRAINT "orders_userId_fkey" FOREIGN KEY (userid)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.orders
+    OWNER to admin;
+
+
+
+CREATE TABLE public.addresses
+(
+    id integer NOT NULL DEFAULT nextval('addresses_id_seq'::regclass),
+    orderid integer,
+    addresssent text COLLATE pg_catalog."default",
+    deliveryaddress text COLLATE pg_catalog."default",
+    distance integer NOT NULL,
+    CONSTRAINT addresses_pkey PRIMARY KEY (id),
+    CONSTRAINT "addresses_orderId_fkey" FOREIGN KEY (orderid)
+        REFERENCES public.orders (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.addresses
+    OWNER to admin;
+
+
+CREATE TABLE public.invoices
+(
+    id integer NOT NULL DEFAULT nextval('invoices_id_seq'::regclass),
+    orderid integer,
+    sum integer,
+    state text COLLATE pg_catalog."default",
+    CONSTRAINT invoices_pkey PRIMARY KEY (id),
+    CONSTRAINT "invoices_orderId_fkey" FOREIGN KEY (orderid)
+        REFERENCES public.orders (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.invoices
+    OWNER to admin;
