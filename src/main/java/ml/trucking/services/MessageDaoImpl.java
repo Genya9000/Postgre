@@ -19,7 +19,20 @@ public MessageDaoImpl(Connection connection){this.connection=connection;}
     public void addMessage(String email, String message) {
         try {
             try (PreparedStatement st = connection
-                    .prepareStatement("INSERT INTO messages (email, message) VALUES (?, ?)")) {
+                    .prepareStatement("CREATE TABLE IF NOT EXISTS public.messages\n" +
+                            "(\n" +
+                            "    id SERIAL,\n" +
+                            "    email text COLLATE pg_catalog.\"default\" NOT NULL,\n" +
+                            "    message text COLLATE pg_catalog.\"default\",\n" +
+                            "    CONSTRAINT messages_pkey PRIMARY KEY (id)\n" +
+                            ")\n" +
+                            "WITH (\n" +
+                            "    OIDS = FALSE\n" +
+                            ")\n" +
+                            "TABLESPACE pg_default;\n" +
+                            "\n" +
+                            "ALTER TABLE public.messages\n" +
+                            "    OWNER to admin; INSERT INTO messages (email, message) VALUES (?, ?)")) {
                 st.setString(1, email);
                 st.setString(2, message);
 

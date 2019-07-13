@@ -24,7 +24,90 @@ public class UserDaoImpl implements CrudDao, UserDao {
     public void addUser(String name, String phone, String email, String password) {
         try {
             try (PreparedStatement st = connection
-                    .prepareStatement("INSERT INTO users (name, phone, email, password) VALUES (?, ?, ?, ?)")) {
+                    .prepareStatement("CREATE TABLE IF NOT EXISTS public.users\n" +
+                            "(\n" +
+                            "    id serial,\n" +
+                            "    name text COLLATE pg_catalog.\"default\" NOT NULL,\n" +
+                            "    phone character(10) COLLATE pg_catalog.\"default\" NOT NULL,\n" +
+                            "    email text COLLATE pg_catalog.\"default\" NOT NULL,\n" +
+                            "    password text COLLATE pg_catalog.\"default\" NOT NULL,\n" +
+                            "    CONSTRAINT users_pkey PRIMARY KEY (id)\n" +
+                            ")\n" +
+                            "WITH (\n" +
+                            "    OIDS = FALSE\n" +
+                            ")\n" +
+                            "TABLESPACE pg_default;\n" +
+                            "\n" +
+                            "ALTER TABLE public.users\n" +
+                            "    OWNER to admin; \n" +
+                            "\n" +
+                            "\n" +
+                            "\n" +
+                            "CREATE TABLE IF NOT EXISTS public.orders\n" +
+                            "(\n" +
+                            "    id SERIAL,\n" +
+                            "    userid integer,\n" +
+                            "    tipe text COLLATE pg_catalog.\"default\",\n" +
+                            "    weight integer NOT NULL,\n" +
+                            "    date text COLLATE pg_catalog.\"default\",\n" +
+                            "    CONSTRAINT orders_pkey PRIMARY KEY (id),\n" +
+                            "    CONSTRAINT \"orders_userId_fkey\" FOREIGN KEY (userid)\n" +
+                            "        REFERENCES public.users (id) MATCH SIMPLE\n" +
+                            "        ON UPDATE CASCADE\n" +
+                            "        ON DELETE CASCADE\n" +
+                            ")\n" +
+                            "WITH (\n" +
+                            "    OIDS = FALSE\n" +
+                            ")\n" +
+                            "TABLESPACE pg_default;\n" +
+                            "\n" +
+                            "ALTER TABLE public.orders\n" +
+                            "    OWNER to admin;\n" +
+                            "\n" +
+                            "\n" +
+                            "\n" +
+                            "CREATE TABLE IF NOT EXISTS public.addresses\n" +
+                            "(\n" +
+                            "    id SERIAL,\n" +
+                            "    orderid integer,\n" +
+                            "    addresssent text COLLATE pg_catalog.\"default\",\n" +
+                            "    deliveryaddress text COLLATE pg_catalog.\"default\",\n" +
+                            "    distance integer NOT NULL,\n" +
+                            "    CONSTRAINT addresses_pkey PRIMARY KEY (id),\n" +
+                            "    CONSTRAINT \"addresses_orderId_fkey\" FOREIGN KEY (orderid)\n" +
+                            "        REFERENCES public.orders (id) MATCH SIMPLE\n" +
+                            "        ON UPDATE CASCADE\n" +
+                            "        ON DELETE CASCADE\n" +
+                            ")\n" +
+                            "WITH (\n" +
+                            "    OIDS = FALSE\n" +
+                            ")\n" +
+                            "TABLESPACE pg_default;\n" +
+                            "\n" +
+                            "ALTER TABLE public.addresses\n" +
+                            "    OWNER to admin;\n" +
+                            "\n" +
+                            "\n" +
+                            "CREATE TABLE IF NOT EXISTS public.invoices\n" +
+                            "(\n" +
+                            "    id SERIAL,\n" +
+                            "    orderid integer,\n" +
+                            "    sum integer,\n" +
+                            "    state text COLLATE pg_catalog.\"default\",\n" +
+                            "    CONSTRAINT invoices_pkey PRIMARY KEY (id),\n" +
+                            "    CONSTRAINT \"invoices_orderId_fkey\" FOREIGN KEY (orderid)\n" +
+                            "        REFERENCES public.orders (id) MATCH SIMPLE\n" +
+                            "        ON UPDATE CASCADE\n" +
+                            "        ON DELETE CASCADE\n" +
+                            ")\n" +
+                            "WITH (\n" +
+                            "    OIDS = FALSE\n" +
+                            ")\n" +
+                            "TABLESPACE pg_default;\n" +
+                            "\n" +
+                            "ALTER TABLE public.invoices\n" +
+                            "OWNER to admin;" +
+                            "INSERT INTO users (name, phone, email, password) VALUES (?, ?, ?, ?)")) {
                 st.setString(1, name);
                 st.setString(2, phone);
                 st.setString(3, email);
