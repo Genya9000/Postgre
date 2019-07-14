@@ -1,2 +1,2 @@
-web: java $JAVA_OPTS -cp target/classes:target/dependency/* 
+web: java $JAVA_OPTS -cp target/trucking-project-1.0-SNAPSHOT
 
