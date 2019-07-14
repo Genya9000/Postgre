@@ -1,2 +1,2 @@
-web: java $JAVA_OPTS -cp target/classes:target/dependency/* carriage-f
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* 
 
