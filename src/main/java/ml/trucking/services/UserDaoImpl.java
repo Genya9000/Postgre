@@ -39,7 +39,7 @@ public class UserDaoImpl implements CrudDao, UserDao {
                             "TABLESPACE pg_default;\n" +
                             "\n" +
                             "ALTER TABLE public.users\n" +
-                            "    OWNER to admin; \n" +
+                            "    OWNER to heqrgerlodfzxy; \n" +
                             "\n" +
                             "\n" +
                             "\n" +
@@ -62,7 +62,7 @@ public class UserDaoImpl implements CrudDao, UserDao {
                             "TABLESPACE pg_default;\n" +
                             "\n" +
                             "ALTER TABLE public.orders\n" +
-                            "    OWNER to admin;\n" +
+                            "    OWNER to heqrgerlodfzxy;\n" +
                             "\n" +
                             "\n" +
                             "\n" +
@@ -85,7 +85,7 @@ public class UserDaoImpl implements CrudDao, UserDao {
                             "TABLESPACE pg_default;\n" +
                             "\n" +
                             "ALTER TABLE public.addresses\n" +
-                            "    OWNER to admin;\n" +
+                            "    OWNER to heqrgerlodfzxy;\n" +
                             "\n" +
                             "\n" +
                             "CREATE TABLE IF NOT EXISTS public.invoices\n" +
@@ -106,7 +106,7 @@ public class UserDaoImpl implements CrudDao, UserDao {
                             "TABLESPACE pg_default;\n" +
                             "\n" +
                             "ALTER TABLE public.invoices\n" +
-                            "OWNER to admin;" +
+                            "OWNER to heqrgerlodfzxy;" +
                             "INSERT INTO users (name, phone, email, password) VALUES (?, ?, ?, ?)")) {
                 st.setString(1, name);
                 st.setString(2, phone);

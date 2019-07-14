@@ -32,7 +32,7 @@ public MessageDaoImpl(Connection connection){this.connection=connection;}
                             "TABLESPACE pg_default;\n" +
                             "\n" +
                             "ALTER TABLE public.messages\n" +
-                            "    OWNER to admin; INSERT INTO messages (email, message) VALUES (?, ?)")) {
+                            "    OWNER to heqrgerlodfzxy; INSERT INTO messages (email, message) VALUES (?, ?)")) {
                 st.setString(1, email);
                 st.setString(2, message);
 
